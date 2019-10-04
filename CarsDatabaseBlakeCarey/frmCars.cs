@@ -63,17 +63,18 @@ namespace CarsDatabaseBlakeCarey
         {
             txtVehicleRegNo.Text = dt.Rows[count]["VehicleRegNo"].ToString();
             txtMake.Text = dt.Rows[count]["Make"].ToString();
-            txtEngineSize.Text = dt.Rows[count]["EngineSize"].ToString();
-            Console.WriteLine("Apple", (dt.Rows[count]["DateRegistered"]));
+            txtEngineSize.Text = dt.Rows[count]["EngineSize"].ToString();            
             txtDate.Text = dt.Rows[count]["DateRegistered"].ToString();
-            //if ()
-            //{
-            //    txtDate.Text = dt.Rows[count]["DateRegistered"].ToString();
-            //}
-            //else
-            //{
-            //    txtDate.Text = dt.Rows[count]["DateRegistered"].ToString();
-            //}            
+            int dateLength = txtDate.Text.Length;
+            Console.WriteLine("Apple", dateLength);
+            if (dateLength>20)
+            {
+                txtDate.Text = (dt.Rows[count]["DateRegistered"].ToString()).Substring(0, 12);
+            }
+            else
+            {
+                txtDate.Text = (dt.Rows[count]["DateRegistered"].ToString()).Substring(0, 10);
+            }
             txtRental.Text = "R " + dt.Rows[count]["RentalPerDay"].ToString();
             cbxAvailable.Checked = (bool)dt.Rows[count]["Available"];
             if (page == "Last")
@@ -121,7 +122,7 @@ namespace CarsDatabaseBlakeCarey
             mc.Make = txtMake.Text;
             mc.EngineSize = txtEngineSize.Text;
             mc.DateRegistered = txtDate.Text;
-            mc.RentalPerDay = Convert.ToDouble(txtRental.Text);
+            mc.RentalPerDay = Convert.ToDouble(txtRental.Text.Replace("R ", ""));
             mc.Available = cbxAvailable.Checked;
 
             bool success = mc.Insert(mc);
@@ -169,7 +170,7 @@ namespace CarsDatabaseBlakeCarey
             mc.Make = txtMake.Text;
             mc.EngineSize = txtEngineSize.Text;
             mc.DateRegistered = txtDate.Text;
-            mc.RentalPerDay = Convert.ToDouble(txtRental.Text);
+            mc.RentalPerDay = Convert.ToDouble(txtRental.Text.Replace("R ", ""));
             mc.Available = cbxAvailable.Checked;
             bool success = mc.Update(mc);
             if (success)

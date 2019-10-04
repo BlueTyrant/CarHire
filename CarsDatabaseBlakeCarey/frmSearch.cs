@@ -65,6 +65,14 @@ namespace CarsDatabaseBlakeCarey
             DataTable dt = mc.Select();
             dgvSearch.DataSource = dt;
             this.dgvSearch.Columns["ID"].Visible = false;
+            //int count = 0;
+            //if (count < (dt.Rows.Count - 1))
+            //{
+            //    count++;
+            //    //double test = this.dgvSearch.Rows[count].Cells["RentalPerDay"].Value;
+            //    this.dgvSearch.Rows[count].Cells["Make"].Value = "R"+90;//'R' + this.dgvSearch.Rows[count].Cells["RentalPerDay"].Value;
+            //}
+            //this.dgvSearch.Columns["RentalPerDay"].Value = 'R'; 
             btnRun.FlatStyle = FlatStyle.Flat;
             btnClose.FlatStyle = FlatStyle.Flat;
         }        
