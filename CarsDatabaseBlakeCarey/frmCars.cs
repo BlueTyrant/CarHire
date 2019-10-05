@@ -66,7 +66,6 @@ namespace CarsDatabaseBlakeCarey
             txtEngineSize.Text = dt.Rows[count]["EngineSize"].ToString();            
             txtDate.Text = dt.Rows[count]["DateRegistered"].ToString();
             int dateLength = txtDate.Text.Length;
-            Console.WriteLine("Apple", dateLength);
             if (dateLength>20)
             {
                 txtDate.Text = (dt.Rows[count]["DateRegistered"].ToString()).Substring(0, 12);
