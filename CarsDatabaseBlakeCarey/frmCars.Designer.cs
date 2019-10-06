@@ -59,6 +59,7 @@
             this.toolTip4 = new System.Windows.Forms.ToolTip(this.components);
             this.toolTip5 = new System.Windows.Forms.ToolTip(this.components);
             this.toolTip6 = new System.Windows.Forms.ToolTip(this.components);
+            this.btnClear = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -334,12 +335,25 @@
             this.toolTip6.InitialDelay = 300;
             this.toolTip6.ReshowDelay = 100;
             // 
+            // btnClear
+            // 
+            this.btnClear.BackColor = System.Drawing.Color.AliceBlue;
+            this.btnClear.FlatAppearance.BorderSize = 0;
+            this.btnClear.Location = new System.Drawing.Point(539, 331);
+            this.btnClear.Name = "btnClear";
+            this.btnClear.Size = new System.Drawing.Size(81, 33);
+            this.btnClear.TabIndex = 24;
+            this.btnClear.Text = "Clear";
+            this.btnClear.UseVisualStyleBackColor = false;
+            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
+            // 
             // frmCars
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.RoyalBlue;
             this.ClientSize = new System.Drawing.Size(661, 387);
+            this.Controls.Add(this.btnClear);
             this.Controls.Add(this.btnLast);
             this.Controls.Add(this.btnNext);
             this.Controls.Add(this.btnPrevious);
@@ -404,6 +418,7 @@
         private System.Windows.Forms.ToolTip toolTip4;
         private System.Windows.Forms.ToolTip toolTip5;
         private System.Windows.Forms.ToolTip toolTip6;
+        private System.Windows.Forms.Button btnClear;
     }
 }
 

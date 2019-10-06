@@ -29,24 +29,31 @@ namespace CarsDatabaseBlakeCarey
         
         private void frmCars_Load(object sender, EventArgs e)
         {
-            btnFirst.FlatStyle = FlatStyle.Flat;
-            btnPrevious.FlatStyle = FlatStyle.Flat;
-            btnNext.FlatStyle = FlatStyle.Flat;
-            btnLast.FlatStyle = FlatStyle.Flat;
-            btnUpdate.FlatStyle = FlatStyle.Flat;
-            btnAdd.FlatStyle = FlatStyle.Flat;
-            btnDelete.FlatStyle = FlatStyle.Flat;
-            btnSearch.FlatStyle = FlatStyle.Flat;
-            btnCancel.FlatStyle = FlatStyle.Flat;
-            btnExit.FlatStyle = FlatStyle.Flat;
-            Paginate(count);
-            toolTip1.SetToolTip(txtVehicleRegNo, "Enter the registration/number plate of the vehicle");
-            toolTip2.SetToolTip(txtMake, "Enter the Make/Brand of the vehicle");
-            toolTip3.SetToolTip(txtEngineSize, "Enter the Engine Size of the vehicle");
-            toolTip4.SetToolTip(txtDate, "Enter the date of registration of the vehicle");
-            toolTip5.SetToolTip(txtRental, "Enter the Rental per day for the vehicle");
-            toolTip6.SetToolTip(cbxAvailable, "Check the Avalibilty of the vehicle");
-            
+            try
+            {
+                btnFirst.FlatStyle = FlatStyle.Flat;
+                btnPrevious.FlatStyle = FlatStyle.Flat;
+                btnNext.FlatStyle = FlatStyle.Flat;
+                btnLast.FlatStyle = FlatStyle.Flat;
+                btnUpdate.FlatStyle = FlatStyle.Flat;
+                btnAdd.FlatStyle = FlatStyle.Flat;
+                btnDelete.FlatStyle = FlatStyle.Flat;
+                btnSearch.FlatStyle = FlatStyle.Flat;
+                btnCancel.FlatStyle = FlatStyle.Flat;
+                btnExit.FlatStyle = FlatStyle.Flat;
+                btnClear.FlatStyle = FlatStyle.Flat;
+                Paginate(count);
+                toolTip1.SetToolTip(txtVehicleRegNo, "Enter the registration/number plate of the vehicle e.g 'GH376DRS'");
+                toolTip2.SetToolTip(txtMake, "Enter the Make/Brand of the vehicle e.g 'Mazda'");
+                toolTip3.SetToolTip(txtEngineSize, "Enter the Engine Size of the vehicle e.g '1.6L'");
+                toolTip4.SetToolTip(txtDate, "Enter the date of registration for the vehicle in format YYYY/MM/DD e.g '2009/10/04'");
+                toolTip5.SetToolTip(txtRental, "Enter the Rental price per day for the vehicle e.g 'R 90.00'");
+                toolTip6.SetToolTip(cbxAvailable, "Check the Avalibilty of the vehicle");
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Error Getting Load data", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         public void Clear()
@@ -61,28 +68,35 @@ namespace CarsDatabaseBlakeCarey
 
         public void Paginate(int count, [Optional] string page)
         {
-            txtVehicleRegNo.Text = dt.Rows[count]["VehicleRegNo"].ToString();
-            txtMake.Text = dt.Rows[count]["Make"].ToString();
-            txtEngineSize.Text = dt.Rows[count]["EngineSize"].ToString();            
-            txtDate.Text = dt.Rows[count]["DateRegistered"].ToString();
-            int dateLength = txtDate.Text.Length;
-            if (dateLength>20)
+            try
             {
-                txtDate.Text = (dt.Rows[count]["DateRegistered"].ToString()).Substring(0, 12);
+                txtVehicleRegNo.Text = dt.Rows[count]["VehicleRegNo"].ToString();
+                txtMake.Text = dt.Rows[count]["Make"].ToString();
+                txtEngineSize.Text = dt.Rows[count]["EngineSize"].ToString();            
+                txtDate.Text = dt.Rows[count]["DateRegistered"].ToString();
+                int dateLength = txtDate.Text.Length;
+                if (dateLength>20)
+                {
+                    txtDate.Text = (dt.Rows[count]["DateRegistered"].ToString()).Substring(0, 12);
+                }
+                else
+                {
+                    txtDate.Text = (dt.Rows[count]["DateRegistered"].ToString()).Substring(0, 10);
+                }
+                txtRental.Text = "R " + dt.Rows[count]["RentalPerDay"].ToString();
+                cbxAvailable.Checked = (bool)dt.Rows[count]["Available"];
+                if (page == "Last")
+                {
+                    txtPaginate.Text = dt.Rows.Count + " of " + dt.Rows.Count;
+                }
+                else
+                {
+                    txtPaginate.Text = (count + 1) + " of " + dt.Rows.Count;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                txtDate.Text = (dt.Rows[count]["DateRegistered"].ToString()).Substring(0, 10);
-            }
-            txtRental.Text = "R " + dt.Rows[count]["RentalPerDay"].ToString();
-            cbxAvailable.Checked = (bool)dt.Rows[count]["Available"];
-            if (page == "Last")
-            {
-                txtPaginate.Text = dt.Rows.Count + " of " + dt.Rows.Count;
-            }
-            else
-            {
-                txtPaginate.Text = (count + 1) + " of " + dt.Rows.Count;
+                MessageBox.Show(ex + "", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -104,7 +118,7 @@ namespace CarsDatabaseBlakeCarey
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            Clear();
+            Paginate(count);
         }
 
         private void btnSearch_Click(object sender, EventArgs e)
@@ -116,72 +130,93 @@ namespace CarsDatabaseBlakeCarey
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            //get the value from the input fields
-            mc.VehicleRegNo = txtVehicleRegNo.Text;
-            mc.Make = txtMake.Text;
-            mc.EngineSize = txtEngineSize.Text;
-            mc.DateRegistered = txtDate.Text;
-            mc.RentalPerDay = Convert.ToDouble(txtRental.Text.Replace("R ", ""));
-            mc.Available = cbxAvailable.Checked;
+            try
+            {
+                //get the value from the input fields
+                mc.VehicleRegNo = txtVehicleRegNo.Text;
+                mc.Make = txtMake.Text;
+                mc.EngineSize = txtEngineSize.Text;
+                mc.DateRegistered = txtDate.Text;
+                mc.RentalPerDay = Convert.ToDouble(txtRental.Text.Replace("R ", ""));
+                mc.Available = cbxAvailable.Checked;
 
-            bool success = mc.Insert(mc);
-            if (success)
-            {
-                dt = mc.Select();
-                MessageBox.Show("New Vehicle Sucessfully Inserted.");
+                bool success = mc.Insert(mc);
+                if (success)
+                {
+                    dt = mc.Select();
+                    MessageBox.Show("New Vehicle Sucessfully Inserted.");
+                }
+                else
+                {
+                    MessageBox.Show("Failed to Insert New Vehicle");
+                }
+                txtPaginate.Text = (count + 1) + " of " + dt.Rows.Count;
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Failed to Insert New Vehicle");
+                MessageBox.Show(ex+"","Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            txtPaginate.Text = (count + 1) + " of " + dt.Rows.Count;
-        }
+}
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            mc.VehicleRegNo = txtVehicleRegNo.Text;
+            try
+            { 
+                mc.VehicleRegNo = txtVehicleRegNo.Text;
 
-            bool success = mc.Delete(mc);
-            if (success)
-            {
-                dt = mc.Select();
-                MessageBox.Show("Vehicle Sucessfully Deleted.");
-            }
-            else
-            {
-                MessageBox.Show("Failed to Delete New Vehicle");
-            }
+                bool success = mc.Delete(mc);
+                if (success)
+                {
+                    dt = mc.Select();
+                    MessageBox.Show("Vehicle Sucessfully Deleted.");
+                }
+                else
+                {
+                    MessageBox.Show("Failed to Delete New Vehicle");
+                }
 
-            if (count < (dt.Rows.Count - 1))
-            {
-                btnNext_Click(sender, e);
+                if (count < (dt.Rows.Count - 1))
+                {
+                    btnNext_Click(sender, e);
+                }
+                else
+                {
+                    btnPrevious_Click(sender, e);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                btnPrevious_Click(sender, e);
+                MessageBox.Show(ex + "", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-            //get the value from the input fields
-            mc.VehicleRegNo = txtVehicleRegNo.Text;
-            mc.Make = txtMake.Text;
-            mc.EngineSize = txtEngineSize.Text;
-            mc.DateRegistered = txtDate.Text;
-            mc.RentalPerDay = Convert.ToDouble(txtRental.Text.Replace("R ", ""));
-            mc.Available = cbxAvailable.Checked;
-            bool success = mc.Update(mc);
-            if (success)
+            try
             {
-                dt = mc.Select();
-                MessageBox.Show("Vehicle Sucessfully Updated.");
+                //get the value from the input fields
+                mc.VehicleRegNo = txtVehicleRegNo.Text;
+                mc.Make = txtMake.Text;
+                mc.EngineSize = txtEngineSize.Text;
+                mc.DateRegistered = txtDate.Text;
+                mc.RentalPerDay = Convert.ToDouble(txtRental.Text.Replace("R ", ""));
+                mc.Available = cbxAvailable.Checked;
+                bool success = mc.Update(mc);
+                if (success)
+                {
+                    dt = mc.Select();
+                    MessageBox.Show("Vehicle Sucessfully Updated.");
+                }
+                else
+                {
+                    MessageBox.Show("Failed to Update Vehicle");
+                }
+                txtPaginate.Text = (count + 1) + " of " + dt.Rows.Count;
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Failed to Update Vehicle");
+                MessageBox.Show(ex+"","Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            txtPaginate.Text = (count + 1) + " of " + dt.Rows.Count;
         }
 
         private void btnFirst_Click(object sender, EventArgs e)
@@ -211,6 +246,11 @@ namespace CarsDatabaseBlakeCarey
                 count++;
                 Paginate(count);
             }
+        }
+
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            Clear();
         }
     }
 }
