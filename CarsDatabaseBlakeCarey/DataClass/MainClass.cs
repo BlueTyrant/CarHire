@@ -151,7 +151,7 @@ namespace CarsDatabaseBlakeCarey.DataClass
             SqlConnection sqlCon = new SqlConnection(myConString);
             try
             {
-                //create a sql query to Insert Data
+                //create a sql query to Update Data
                 string sql = "UPDATE Car SET Make=@Make, EngineSize=@EngineSize, DateRegistered=@DateRegistered, RentalPerDay=@RentalPerDay, Available=@Available WHERE VehicleRegNo=@VehicleRegNo";
                 //creating a sql command using sql and sqlCon
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
@@ -198,7 +198,7 @@ namespace CarsDatabaseBlakeCarey.DataClass
             SqlConnection sqlCon = new SqlConnection(myConString);
             try
             {
-                //create a sql query to Insert Data
+                //create a sql query to Delete Data
                 string sql = "Delete Car WHERE VehicleRegNo=@VehicleRegNo";
                 //creating a sql command using sql and sqlCon
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
